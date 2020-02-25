@@ -343,6 +343,10 @@ def application(el):
     _has_only_text(el)
     return ":program:`%s`" % el.text.strip()
 
+def include(el):
+    return ".. toctree:: \n\n   %s\n" % el.get("href")[:-4]
+
+
 def userinput(el):
     if _strip_ns(el.getparent().tag) == "link":
         return "%s" % _concat(el).strip()
