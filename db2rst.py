@@ -131,20 +131,26 @@ def _remove_indent_and_escape(s):
                s)
     return s
 
-def _concat(el):
+def _concat(el, preserve_spacing=False):
     "concatate .text with children (_conv'ed to text) and their tails"
     s = ""
     id = el.get("id")
     if id is not None and (WRITE_UNUSED_LABELS or id in _linked_ids):
         s += "\n\n.. _%s:\n\n" % id
     if el.text is not None:
-        s += _remove_indent_and_escape(el.text)
+        if preserve_spacing:
+            s += el.text
+        else:
+            s += _remove_indent_and_escape(el.text)
     for i in el.getchildren():
         s += _conv(i)
         if i.tail is not None:
             if len(s) > 0 and not s[-1].isspace() and i.tail[0] in " \t":
                 s += i.tail[0]
-            s += _remove_indent_and_escape(i.tail)
+            if preserve_spacing:
+                s += i.tail
+            else:
+                s += _remove_indent_and_escape(i.tail)
     return s
 
 def _original_xml(el):
@@ -182,9 +188,9 @@ def _block_separated_with_blank_line(el):
         _buffer = ""
     return s
 
-def _indent(el, indent, first_line=None):
+def _indent(el, indent, first_line=None, preserve_spacing=False):
     "returns indented block with exactly one blank line at the beginning"
-    lines = [" "*indent + i for i in _concat(el).splitlines()
+    lines = [" "*indent + i for i in _concat(el, preserve_spacing=preserve_spacing).splitlines()
              if i and not i.isspace()]
     if first_line is not None:
         # replace indentation of the first line with prefix `first_line'
@@ -347,8 +353,8 @@ def application(el):
     return ":program:`%s`" % el.text.strip()
 
 def include(el):
-    return ".. toctree:: \n\n   %s\n" % el.get("href")[:-4]
-
+    # TODO: remove .xml
+    return ".. toctree:: \n\n   %s\n" % el.get("href")
 
 def userinput(el):
     if _strip_ns(el.getparent().tag) == "link":
@@ -359,6 +365,7 @@ def userinput(el):
 literal = userinput
 systemitem = userinput
 prompt = lambda el: "%s " % _concat(el).strip()
+replaceable = lambda el: el.text
 
 def filename(el):
     _has_only_text(el)
@@ -415,6 +422,9 @@ def screen(el):
     return "\n::\n" + _indent(el, 4) + "\n"
 
 literallayout = screen
+
+def programlisting(el):
+    return "\n::\n" + _indent(el, 4, preserve_spacing=True) + "\n"
 
 def blockquote(el):
     return _indent(el, 4)
