@@ -456,10 +456,10 @@ def variablelist(el):
     title = el.find("title")
     if title is not None:
         s += _conv(title)
-    for entry in el.findall("varlistentry"):
+    for entry in el.findall("{http://docbook.org/ns/docbook}varlistentry"):
         s += "\n\n"
-        s += ", ".join(_concat(i).strip() for i in entry.findall("term"))
-        s += _indent(entry.find("listitem"), 4)[1:]
+        s += ", ".join(_concat(i).strip() for i in entry.findall("{http://docbook.org/ns/docbook}term"))
+        s += _indent(entry.find("{http://docbook.org/ns/docbook}listitem"), 4)[1:]
     return s
 
 
