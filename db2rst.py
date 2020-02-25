@@ -56,9 +56,9 @@ def _main():
     sys.stderr.write("Parsing XML file `%s'...\n" % input_file)
     parser = ET.XMLParser(remove_comments=REMOVE_COMMENTS)
     tree = ET.parse(input_file, parser=parser)
-    for elem in tree.getiterator():
-        if ET.QName(elem.tag).localname in ("xref", "link"):
-            _linked_ids.add(elem.get("linkend"))
+    # for elem in tree.getiterator():
+    #     if ET.QName(elem.tag).localname in ("xref", "link"):
+    #         _linked_ids.add(elem.get("linkend"))
     print TreeRoot(tree.getroot()).encode('utf-8')
 
 def _strip_ns(tag):
@@ -244,7 +244,7 @@ def xref(el):
     return ":ref:`%s`" % el.get("linkend")
 
 def link(el):
-    return ":ref:`%s <%s>`" % (_concat(el).strip(), el.get("linkend"))
+    return "`%s <%s>`_" % (_concat(el).strip(), el.get("{http://www.w3.org/1999/xlink}href"))
 
 
 # math and media
