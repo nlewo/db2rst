@@ -355,7 +355,7 @@ def userinput(el):
 
 literal = userinput
 systemitem = userinput
-prompt = userinput
+prompt = lambda el: "%s " % _concat(el).strip()
 
 def filename(el):
     _has_only_text(el)
