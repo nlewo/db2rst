@@ -62,7 +62,10 @@ def _main():
     print TreeRoot(tree.getroot()).encode('utf-8')
 
 def _strip_ns(tag):
-    return ET.QName(tag).localname
+    try:
+        return ET.QName(tag).localname
+    except ValueError:
+        return tag
 
 def _warn(s):
     sys.stderr.write("WARNING: %s\n" % s)
@@ -98,7 +101,7 @@ def _has_no_text(el):
 
 def _conv(el):
     "element to string conversion; usually calls element_name() to do the job"
-    tag = ET.QName(el.tag).localname
+    tag = _strip_ns(el.tag)
     if tag in globals():
         s = globals()[tag](el)
         assert s, "Error: %s -> None\n" % _get_path(el)
