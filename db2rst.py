@@ -57,7 +57,7 @@ def _main():
     parser = ET.XMLParser(remove_comments=REMOVE_COMMENTS)
     tree = ET.parse(input_file, parser=parser)
     for elem in tree.getiterator():
-        if elem.tag in ("xref", "link"):
+        if ET.QName(elem.tag).localname in ("xref", "link"):
             _linked_ids.add(elem.get("linkend"))
     print TreeRoot(tree.getroot()).encode('utf-8')
 
@@ -95,17 +95,18 @@ def _has_no_text(el):
 
 def _conv(el):
     "element to string conversion; usually calls element_name() to do the job"
-    if el.tag in globals():
-        s = globals()[el.tag](el)
+    tag = ET.QName(el.tag).localname
+    if tag in globals():
+        s = globals()[tag](el)
         assert s, "Error: %s -> None\n" % _get_path(el)
         return s
     elif isinstance(el, ET._Comment):
         return Comment(el) if (el.text and not el.text.isspace()) else ""
     else:
-        if el.tag not in _not_handled_tags:
-            _warn("Don't know how to handle <%s>" % el.tag)
+        if tag not in _not_handled_tags:
+            _warn("Don't know how to handle <%s>" % tag)
             #_warn(" ... from path: %s" % _get_path(el))
-            _not_handled_tags.add(el.tag)
+            _not_handled_tags.add(tag)
         return _concat(el)
 
 def _no_special_markup(el):
@@ -342,6 +343,7 @@ def application(el):
 def userinput(el):
     return "``%s``" % _concat(el).strip()
 
+literal = userinput
 systemitem = userinput
 prompt = userinput
 
