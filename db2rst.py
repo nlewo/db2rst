@@ -397,10 +397,15 @@ def title(el):
     # Titles in some elements may be handled from the title's parent.
     t = _concat(el).strip()
     level = _get_level(el)
-    parent = el.getparent().tag
-    ## title in elements other than the following will trigger assertion
-    #if parent in ("book", "chapter", "section", "variablelist", "appendix"):
-    return _make_title(t, level)
+    parent = _strip_ns(el.getparent().tag)
+    levels = {
+        "book": "#",
+        "part": "=",
+        "preface": "=",
+        "chapter": "-",
+        "section": "~",
+    }
+    return "\n\n" + t + "\n" + levels[parent] * len(t)
 
 def screen(el):
     return "\n::\n" + _indent(el, 4) + "\n"
