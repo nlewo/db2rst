@@ -61,6 +61,9 @@ def _main():
             _linked_ids.add(elem.get("linkend"))
     print TreeRoot(tree.getroot()).encode('utf-8')
 
+def _strip_ns(tag):
+    return ET.QName(tag).localname
+
 def _warn(s):
     sys.stderr.write("WARNING: %s\n" % s)
 
@@ -341,7 +344,10 @@ def application(el):
     return ":program:`%s`" % el.text.strip()
 
 def userinput(el):
-    return "``%s``" % _concat(el).strip()
+    if _strip_ns(el.getparent().tag) == "link":
+        return "%s" % _concat(el).strip()
+    else:
+        return "``%s``" % _concat(el).strip()
 
 literal = userinput
 systemitem = userinput
