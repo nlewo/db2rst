@@ -407,6 +407,7 @@ def title(el):
         "preface": "=",
         "chapter": "-",
         "section": "~",
+        "example": "^",
     }
     return "\n\n" + t + "\n" + levels[parent] * len(t)
 
