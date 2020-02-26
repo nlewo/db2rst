@@ -429,6 +429,13 @@ def title(el):
     }
     return "\n\n" + t + "\n" + levels[parent] * len(t)
 
+def option(el):
+    parent = el.getparent()
+    s = ".. _%s:\n\n" % parent.get('{http://www.w3.org/XML/1998/namespace}id')
+    s += "%s\n" % el.text.strip()
+    s += "_" * len(el.text.strip()) + "\n"
+    return s
+
 def screen(el):
     return "\n::\n" + _indent(el, 4) + "\n"
 
