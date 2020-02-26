@@ -476,7 +476,7 @@ def simplelist(el):
 def variablelist(el):
     #VariableList ::= ((Title,TitleAbbrev?)?, VarListEntry+)
     #VarListEntry ::= (Term+,ListItem)
-    _supports_only(el, ("title", "varlistentry"))
+    _supports_only(el, ("title", "varlistentry", "{http://docbook.org/ns/docbook}varlistentry"))
     s = ""
     title = el.find("title")
     if title is not None:
