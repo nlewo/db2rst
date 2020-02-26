@@ -181,7 +181,12 @@ def _join_children(el, sep):
     return sep.join(_conv(i) for i in el.getchildren())
 
 def _block_separated_with_blank_line(el):
-    s = "\n\n" + _concat(el)
+    s = "\n\n"
+
+    xmlid = '{http://www.w3.org/XML/1998/namespace}id'
+    if xmlid in el.keys():
+        s += ".. _%s:\n\n" % el.get(xmlid)
+    s +=  _concat(el)
     global _buffer
     if _buffer:
         s += "\n\n" + _buffer
