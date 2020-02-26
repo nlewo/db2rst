@@ -104,7 +104,8 @@ def _conv(el):
     tag = _strip_ns(el.tag)
     if tag in globals():
         s = globals()[tag](el)
-        assert s, "Error: %s -> None\n" % _get_path(el)
+        if s != "":
+            assert s, "Error: %s -> None\n" % _get_path(el)
         return s
     elif isinstance(el, ET._Comment):
         return Comment(el) if (el.text and not el.text.isspace()) else ""
@@ -432,12 +433,16 @@ def title(el):
     }
     return "\n\n" + t + "\n" + levels[parent] * len(t)
 
+# This is to support generated options
 def option(el):
     parent = el.getparent()
-    s = ".. _%s:\n\n" % parent.get('{http://www.w3.org/XML/1998/namespace}id')
-    s += "%s\n" % el.text.strip()
-    s += "_" * len(el.text.strip()) + "\n"
-    return s
+    if parent.tag == "term":
+        s = ".. _%s:\n\n" % parent.get('{http://www.w3.org/XML/1998/namespace}id')
+        s += "%s\n" % el.text.strip()
+        s += "_" * len(el.text.strip()) + "\n"
+        return s
+    else:
+        return ""
 
 def screen(el):
     return "\n::\n" + _indent(el, 4) + "\n"
