@@ -354,7 +354,7 @@ def application(el):
 
 def include(el):
     # TODO: remove .xml
-    return ".. toctree:: \n\n   %s\n" % el.get("href")
+    return ".. toctree:: \n\n   %s.rst\n" % el.get("href")
 
 def userinput(el):
     if _strip_ns(el.getparent().tag) == "link":
