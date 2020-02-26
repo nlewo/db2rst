@@ -196,11 +196,10 @@ def _block_separated_with_blank_line(el):
 
 def _indent(el, indent, first_line=None, preserve_spacing=False):
     "returns indented block with exactly one blank line at the beginning"
-    lines = [" "*indent + i for i in _concat(el, preserve_spacing=preserve_spacing).splitlines
-()
+    lines = [" "*indent + i for i in _concat(el, preserve_spacing=preserve_spacing).splitlines()]
             # Not sure it doesn't break something elsewhere...
             # if i and not i.isspace()]
-             if i ]
+
     if first_line is not None:
         # replace indentation of the first line with prefix `first_line'
         lines[0] = first_line + lines[0][indent:]
