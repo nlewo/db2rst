@@ -436,7 +436,8 @@ def title(el):
 # This is to support generated options
 def option(el):
     parent = el.getparent()
-    if parent.tag == "term":
+
+    if parent.tag == "{http://docbook.org/ns/docbook}term":
         s = ".. _%s:\n\n" % parent.get('{http://www.w3.org/XML/1998/namespace}id')
         s += "%s\n" % el.text.strip()
         s += "_" * len(el.text.strip()) + "\n"
