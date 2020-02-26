@@ -420,9 +420,12 @@ def title(el):
         "book": "#",
         "part": "=",
         "preface": "=",
+        "appendix": "=",
         "chapter": "-",
         "section": "~",
         "example": "^",
+        # Not about that :/
+        "note": "^",
     }
     return "\n\n" + t + "\n" + levels[parent] * len(t)
 
