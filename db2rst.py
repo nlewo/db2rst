@@ -451,7 +451,12 @@ def screen(el):
 literallayout = screen
 
 def programlisting(el):
-    return "\n::\n" + _indent(el, 4, preserve_spacing=True) + "\n"
+    if el.findall("{http://docbook.org/ns/docbook}xref") != []:
+        block = ".. parsed-literal::"
+    else:
+        block = "::"
+    return "\n\n" + block + "\n" +  _indent(el, 4, preserve_spacing=True) + "\n"
+
 
 def blockquote(el):
     return _indent(el, 4)
