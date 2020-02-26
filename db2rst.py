@@ -374,7 +374,10 @@ replaceable = lambda el: "%s" % _concat(el).strip()
 
 def filename(el):
     _has_only_text(el)
-    return ":file:`%s`" % el.text
+    if el.get("{http://www.w3.org/1999/xlink}href") is not None:
+        return link(el)
+    else:
+        return ":file:`%s`" % el.text
 
 def command(el):
     return ":command:`%s`" % _concat(el).strip()
