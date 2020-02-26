@@ -365,7 +365,7 @@ def userinput(el):
 literal = userinput
 systemitem = userinput
 prompt = lambda el: "%s " % _concat(el).strip()
-replaceable = lambda el: el.text
+replaceable = lambda el: "%s" % _concat(el).strip()
 
 def filename(el):
     _has_only_text(el)
