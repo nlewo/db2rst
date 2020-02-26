@@ -195,8 +195,11 @@ def _block_separated_with_blank_line(el):
 
 def _indent(el, indent, first_line=None, preserve_spacing=False):
     "returns indented block with exactly one blank line at the beginning"
-    lines = [" "*indent + i for i in _concat(el, preserve_spacing=preserve_spacing).splitlines()
-             if i and not i.isspace()]
+    lines = [" "*indent + i for i in _concat(el, preserve_spacing=preserve_spacing).splitlines
+()
+            # Not sure it doesn't break something elsewhere...
+            # if i and not i.isspace()]
+             if i ]
     if first_line is not None:
         # replace indentation of the first line with prefix `first_line'
         lines[0] = first_line + lines[0][indent:]
@@ -491,7 +494,7 @@ def variablelist(el):
     for entry in el.findall("{http://docbook.org/ns/docbook}varlistentry"):
         s += "\n\n"
         s += ", ".join(_concat(i).strip() for i in entry.findall("{http://docbook.org/ns/docbook}term"))
-        s += _indent(entry.find("{http://docbook.org/ns/docbook}listitem"), 4)[1:]
+        s += _indent(entry.find("{http://docbook.org/ns/docbook}listitem"), 4, preserve_spacing=True)[1:]
     return s
 
 
