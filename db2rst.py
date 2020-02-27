@@ -426,9 +426,15 @@ def title(el):
         "appendix": "=",
         "chapter": "-",
         "section": "~",
+        "simplesect": "~",
         "example": "^",
         # Not about that :/
         "note": "^",
+
+        # This is for manpages
+        # Don't know where to put it
+        "refsection": "^",
+        "reference": "^",
     }
     return "\n\n" + t + "\n" + levels[parent] * len(t)
 
