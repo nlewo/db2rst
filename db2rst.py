@@ -526,7 +526,7 @@ def warning(el):
 
 def author(el):
     _supports_only(el, ("firstname", "surname"))
-    return el.findtext("firstname") + " " + el.findtext("surname")
+    return el.find("{http://docbook.org/ns/docbook}personname/{http://docbook.org/ns/docbook}firstname").text + " " + el.find("{http://docbook.org/ns/docbook}personname/{http://docbook.org/ns/docbook}firstname").text
 
 editor = author
 
