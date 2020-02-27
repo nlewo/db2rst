@@ -470,16 +470,16 @@ chapter = _block_separated_with_blank_line
 
 # lists
 
-def itemizedlist(el, bullet="-"):
+def itemizedlist(el, bullet="-", indent=2):
     # ItemizedList ::= (ListItem+)
     s = ""
     for i in el.getchildren():
-        s += _indent(i, 2, bullet+" ")
+        s += _indent(i, indent, bullet+" ")
     return s + "\n\n"
 
 def orderedlist(el):
     # OrderedList ::= (ListItem+)
-    return itemizedlist(el, bullet="#")
+    return itemizedlist(el, bullet="#.", indent=3)
 
 def simplelist(el):
     # SimpleList ::= (Member+)
